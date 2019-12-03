@@ -12,4 +12,16 @@
     <string name="menu_add_recipe">Add recipe</string>
     <string name="menu_timer">Timer</string>
     <string name="menu_info">Information</string>
+
+    <string name="info_githublinks">
+        <a href="https://github.com/stijnhhh">Stijn Haerkens</a> &amp;
+        <a href="https://github.com/aswevers">Amber Swevers</a>
+    </string>
+    <string name="info_summary">CookBook will help you find new recipes,
+    save your favorites and allow you to save your own recipes! Find your recipes
+    quickly by searching by ingredient, category or name or set a timer to keep track
+    of food!<br/></string>
+    <string name="info_githubproject">Let us know how to improve!
+        <a href="https://github.com/stijnhhh/cookbook">Contact us on GitHub</a>
+    </string>
 </resources>
