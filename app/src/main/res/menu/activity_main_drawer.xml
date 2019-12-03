@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_recipe"
+            android:icon="@drawable/pasta"
+            android:title="@string/menu_recipe" />
+        <item
+            android:id="@+id/nav_favorite"
+            android:icon="@drawable/heart"
+            android:title="@string/menu_favorite" />
+        <item
+            android:id="@+id/nav_addRecipe"
+            android:icon="@drawable/plus_circle"
+            android:title="@string/menu_add_recipe" />
+        <item
+            android:id="@+id/nav_timer"
+            android:icon="@drawable/alarm"
+            android:title="@string/menu_timer" />
+        <item
+            android:id="@+id/nav_info"
+            android:icon="@drawable/cellphone_information"
+            android:title="@string/menu_info" />
+    </group>
+
+</menu>

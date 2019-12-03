@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_recipe">
+
+    <fragment
+        android:id="@+id/nav_recipe"
+        android:name="be.thomasmore.cookbook.ui.recipe.RecipeFragment"
+        android:label="@string/menu_recipe"
+        tools:layout="@layout/fragment_recipe" />
+
+    <fragment
+        android:id="@+id/nav_favorite"
+        android:name="be.thomasmore.cookbook.ui.favorite.FavoriteFragment"
+        android:label="@string/menu_favorite"
+        tools:layout="@layout/fragment_favorite" />
+
+    <fragment
+        android:id="@+id/nav_addRecipe"
+        android:name="be.thomasmore.cookbook.ui.addRecipe.addRecipeFragment"
+        android:label="@string/menu_add_recipe"
+        tools:layout="@layout/fragment_add_recipe" />
+
+    <fragment
+        android:id="@+id/nav_timer"
+        android:name="be.thomasmore.cookbook.ui.timer.TimerFragment"
+        android:label="@string/menu_timer"
+        tools:layout="@layout/fragment_timer" />
+
+    <fragment
+        android:id="@+id/nav_info"
+        android:name="be.thomasmore.cookbook.ui.info.InfoFragment"
+        android:label="@string/menu_info"
+        tools:layout="@layout/fragment_info" />
+
+</navigation>
