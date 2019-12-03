@@ -23,7 +23,7 @@ public class TimerFragment extends Fragment {
     private TimerViewModel timerViewModel;
     private static final long startTime = 60000;
 
-    private TextView countDown;
+    private TextView countDownText;
     private Button buttonStart;
     private Button buttonStop;
     private Button buttonReset;
@@ -46,10 +46,10 @@ public class TimerFragment extends Fragment {
         //        textView.setText(s);
         //    }
         //});
-        countDown = (TextView) getView().findViewById(R.id.text_view_timer);
-        buttonStart = (Button) getView().findViewById(R.id.button_start);
-        buttonStop = (Button) getView().findViewById(R.id.button_stop);
-        buttonReset = (Button) getView().findViewById(R.id.button_reset);
+        final TextView countDownText = root.findViewById(R.id.text_view_timer);
+        final TextView buttonStart = root.findViewById(R.id.button_start);
+        final TextView buttonStop = root.findViewById(R.id.button_stop);
+        final TextView buttonReset = root.findViewById(R.id.button_reset);
 
         buttonStart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,6 +72,8 @@ public class TimerFragment extends Fragment {
             }
         });
 
+        updateCountDownText();
+
         return root;
     }
 
@@ -89,15 +91,19 @@ public class TimerFragment extends Fragment {
             }
         }.start();
 
-
+        buttonReset.setVisibility(View.INVISIBLE);
     }
 
     private void stopTimer() {
+        timer.cancel();
 
+        buttonReset.setVisibility(View.VISIBLE);
     }
 
     private void resetTimer() {
-
+        timeLeft = startTime;
+        updateCountDownText();
+        buttonReset.setVisibility(View.INVISIBLE);
     }
 
     private void updateCountDownText() {
@@ -106,6 +112,6 @@ public class TimerFragment extends Fragment {
 
         String timeLeftFormatted = String.format(Locale.getDefault(),"%02d:%02d", minutes, seconds);
 
-        countDown.setText(timeLeftFormatted);
+        //countDownText.setText(timeLeftFormatted);
     }
 }
