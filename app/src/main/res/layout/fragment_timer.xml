@@ -4,6 +4,32 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/text_view_timer">
+        <ImageView
+            android:id="@+id/minutes_up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/chevron_up"
+            android:layout_above="@+id/text_view_timer"
+            android:layout_marginRight="60sp"
+            android:padding="5sp"
+            />
+
+        <ImageView
+            android:id="@+id/seconds_up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/chevron_up"
+            android:layout_above="@+id/text_view_timer"
+            android:padding="5sp"
+            />
+    </LinearLayout>
+
+
     <TextView
         android:id="@+id/text_view_timer"
         android:layout_width="wrap_content"
@@ -13,28 +39,44 @@
         android:textColor="@android:color/black"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true" />
+
+    <LinearLayout
+        android:id="@+id/down_buttons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/text_view_timer">
+        <ImageView
+            android:id="@+id/minutes_down"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/chevron_down"
+            android:layout_marginRight="60sp"
+            android:padding="5sp"
+            />
+
+        <ImageView
+            android:id="@+id/seconds_down"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/chevron_down"
+            android:padding="5sp"
+            />
+    </LinearLayout>
+
     <Button
         android:id="@+id/button_start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_toLeftOf="@+id/button_reset"
-        android:layout_below="@+id/text_view_timer"
+        android:layout_below="@+id/down_buttons"
         android:text="start"/>
-
-    <Button
-        android:id="@+id/button_stop"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/text_view_timer"
-        android:layout_toRightOf="@+id/button_reset"
-        android:text="stop" />
 
    <Button
        android:id="@+id/button_reset"
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
-       android:layout_below="@+id/text_view_timer"
+       android:layout_below="@+id/button_start"
        android:layout_centerHorizontal="true"
        android:text="reset" />
 

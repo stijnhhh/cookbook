@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -21,12 +22,15 @@ import be.thomasmore.cookbook.R;
 public class TimerFragment extends Fragment {
 
     private TimerViewModel timerViewModel;
-    private static final long startTime = 60000;
+    private long startTime = 0;
 
     private TextView countDownText;
     private Button buttonStart;
-    private Button buttonStop;
     private Button buttonReset;
+    private ImageView minUp;
+    private ImageView minDown;
+    private ImageView secUp;
+    private ImageView secDown;
 
     private CountDownTimer timer;
 
@@ -39,29 +43,27 @@ public class TimerFragment extends Fragment {
         timerViewModel =
                 ViewModelProviders.of(this).get(TimerViewModel.class);
         View root = inflater.inflate(R.layout.fragment_timer, container, false);
-        //final TextView textView = root.findViewById(R.id.text_share);
-        //timerViewModel.getText().observe(this, new Observer<String>() {
-        //    @Override
-        //    public void onChanged(@Nullable String s) {
-        //        textView.setText(s);
-        //    }
-        //});
-        final TextView countDownText = root.findViewById(R.id.text_view_timer);
-        final TextView buttonStart = root.findViewById(R.id.button_start);
-        final TextView buttonStop = root.findViewById(R.id.button_stop);
-        final TextView buttonReset = root.findViewById(R.id.button_reset);
+
+        countDownText = root.findViewById(R.id.text_view_timer);
+        buttonStart = root.findViewById(R.id.button_start);
+        buttonReset = root.findViewById(R.id.button_reset);
+        secDown = root.findViewById(R.id.seconds_down);
+        minDown = root.findViewById(R.id.minutes_down);
+        secUp = root.findViewById(R.id.seconds_up);
+        minUp = root.findViewById(R.id.minutes_up);
+
+        active = false;
+        buttonReset.setVisibility(View.INVISIBLE);
 
         buttonStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startTimer();
-            }
-        });
-
-        buttonStop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                stopTimer();
+                if (active == true) {
+                    stopTimer();
+                } else
+                {
+                    startTimer();
+                }
             }
         });
 
@@ -69,6 +71,34 @@ public class TimerFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 resetTimer();
+            }
+        });
+
+        secUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addSecond();
+            }
+        });
+
+        secDown.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                subtractSecond();
+            }
+        });
+
+        minUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addMinute();
+            }
+        });
+
+        minDown.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                subtractMinute();
             }
         });
 
@@ -83,6 +113,14 @@ public class TimerFragment extends Fragment {
             public void onTick(long millisUntilFinished) {
                 timeLeft = millisUntilFinished;
                 updateCountDownText();
+                buttonStart.setText("pause");
+                active = true;
+                buttonReset.setVisibility(View.INVISIBLE);
+
+                minUp.setVisibility(View.INVISIBLE);
+                secUp.setVisibility(View.INVISIBLE);
+                minDown.setVisibility(View.INVISIBLE);
+                secDown.setVisibility(View.INVISIBLE);
             }
 
             @Override
@@ -97,6 +135,8 @@ public class TimerFragment extends Fragment {
     private void stopTimer() {
         timer.cancel();
 
+        buttonStart.setText("start");
+        active = false;
         buttonReset.setVisibility(View.VISIBLE);
     }
 
@@ -104,6 +144,11 @@ public class TimerFragment extends Fragment {
         timeLeft = startTime;
         updateCountDownText();
         buttonReset.setVisibility(View.INVISIBLE);
+
+        minUp.setVisibility(View.VISIBLE);
+        secUp.setVisibility(View.VISIBLE);
+        minDown.setVisibility(View.VISIBLE);
+        secDown.setVisibility(View.VISIBLE);
     }
 
     private void updateCountDownText() {
@@ -112,6 +157,44 @@ public class TimerFragment extends Fragment {
 
         String timeLeftFormatted = String.format(Locale.getDefault(),"%02d:%02d", minutes, seconds);
 
-        //countDownText.setText(timeLeftFormatted);
+        countDownText.setText(timeLeftFormatted);
+    }
+
+    private void addSecond() {
+        startTime = startTime + 1000;
+        timeLeft = startTime;
+
+        updateCountDownText();
+    }
+
+    private void addMinute() {
+        startTime = startTime + 60000;
+        timeLeft = startTime;
+
+        updateCountDownText();
+    }
+
+    private void subtractSecond() {
+        int seconds = (int) timeLeft / 1000 % 60;
+
+        if (seconds != 0)
+        {
+            startTime = startTime - 1000;
+            timeLeft = startTime;
+        }
+
+        updateCountDownText();
+    }
+
+    private void subtractMinute() {
+        int minutes = (int) timeLeft / 1000 / 60;
+
+        if (minutes != 0)
+        {
+            startTime = startTime - 60000;
+            timeLeft = startTime;
+        }
+
+        updateCountDownText();
     }
 }
