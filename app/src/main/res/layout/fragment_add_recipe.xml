@@ -23,6 +23,11 @@
             android:inputType="text"
             />
 
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/categoryspinner"/>
+
         <Button
             android:id="@+id/buttonAdd"
             android:layout_width="130dp"
