@@ -26,7 +26,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-
+        //vv Delete DB after changing table layout (adding or deleting columns) vv
+        //context.deleteDatabase(DATABASE_NAME);
     }
 
     // methode wordt uitgevoerd als de database gecreëerd wordt
@@ -42,6 +43,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String CREATE_TABLE_RECIPE = "CREATE TABLE recipe (" +
                 "recipeId INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "name TEXT," +
+                "instructions TEXT," +
+                "picture TEXT," +
                 "categoryId INTEGER," +
                 "FOREIGN KEY (categoryId) REFERENCES category(categoryId))";
         db.execSQL(CREATE_TABLE_RECIPE);
@@ -51,8 +54,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     private void insertRecipes(SQLiteDatabase db) {
-        db.execSQL("INSERT INTO recipe (name, categoryId) VALUES ('Apple pie', 1);");
-        db.execSQL("INSERT INTO recipe (name, categoryId) VALUES ('Spaghetti bolognese', 2);");
+        db.execSQL("INSERT INTO recipe (name, instructions, picture, categoryId) VALUES ('Apple pie', 'Bake the pie', 'https://via.placeholder.com/150',  1);");
+        db.execSQL("INSERT INTO recipe (name, instructions, picture,  categoryId) VALUES ('Spaghetti bolognese', 'Cook the pasta', 'https://via.placeholder.com/150',  2);");
     }
 
     private void insertCategories(SQLiteDatabase db) {
@@ -104,7 +107,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 Recipe recipe = new Recipe(cursor.getLong(0),
-                        cursor.getString(1), cursor.getLong(2));
+                        cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getLong(4));
                 lijst.add(recipe);
             } while (cursor.moveToNext());
         }

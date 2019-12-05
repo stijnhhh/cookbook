@@ -73,16 +73,13 @@ public class addRecipeFragment extends Fragment {
         spinnerCategories = (Spinner) root.findViewById(R.id.categoryspinner);
         List<String> list = new ArrayList<String>();
 
-        //db.getCategories();
+        List<Category> categories = db.getCategories();
 
-        list.add("1");
-        list.add("1");
-        list.add("1");
-        list.add("1");
-        /*for(Category category : categories){
+
+        for(Category category : categories){
             list.add(category.toString());
 
-        }*/
+        }
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_spinner_item, list);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
