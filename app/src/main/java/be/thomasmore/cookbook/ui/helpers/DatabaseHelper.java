@@ -27,7 +27,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         //vv Delete DB after changing table layout (adding or deleting columns) vv
-        //context.deleteDatabase(DATABASE_NAME);
+        context.deleteDatabase(DATABASE_NAME);
     }
 
     // methode wordt uitgevoerd als de database gecreëerd wordt
@@ -49,8 +49,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "FOREIGN KEY (categoryId) REFERENCES category(categoryId))";
         db.execSQL(CREATE_TABLE_RECIPE);
 
+        String CREATE_TABLE_INGREDIENT = "CREATE TABLE ingredient (" +
+                "ingredientId INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "name TEXT)";
+        db.execSQL(CREATE_TABLE_INGREDIENT);
+
+        String CREATE_TABLE_RECIPEINGREDIENT = "CREATE TABLE recipeIngredient (" +
+                "recipeId INTEGER," +
+                "ingredientId INTEGER," +
+                "measurement TEXT," +
+                "FOREIGN KEY (ingredientId) REFERENCES ingredient(ingredientId)," +
+                "FOREIGN KEY (recipeId) REFERENCES recipe(recipeId))";
+        db.execSQL(CREATE_TABLE_RECIPEINGREDIENT);
+
         insertCategories(db);
         insertRecipes(db);
+        insertIngredients(db);
+        insertRecipeIngredients(db);
     }
 
     private void insertRecipes(SQLiteDatabase db) {
@@ -67,12 +82,33 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
+    private void insertIngredients(SQLiteDatabase db) {
+        db.execSQL("INSERT INTO ingredient (ingredientId, name) VALUES (1, 'Apples');");
+        db.execSQL("INSERT INTO ingredient (ingredientId, name) VALUES (2, 'Pie crust');");
+        db.execSQL("INSERT INTO ingredient (ingredientId, name) VALUES (3, 'Ice Cream');");
+        db.execSQL("INSERT INTO ingredient (ingredientId, name) VALUES (4, 'Spaghetti');");
+        db.execSQL("INSERT INTO ingredient (ingredientId, name) VALUES (5, 'Tomato Sauce');");
+        db.execSQL("INSERT INTO ingredient (ingredientId, name) VALUES (6, 'Parmesan');");
+
+    }
+
+    private void insertRecipeIngredients(SQLiteDatabase db) {
+        db.execSQL("INSERT INTO recipeIngredient (ingredientId, recipeId, measurement) VALUES (1, 1, '5');");
+        db.execSQL("INSERT INTO recipeIngredient (ingredientId, recipeId, measurement) VALUES (2, 1, '1 package');");
+        db.execSQL("INSERT INTO recipeIngredient (ingredientId, recipeId, measurement) VALUES (3, 1, '3 scoops');");
+        db.execSQL("INSERT INTO recipeIngredient (ingredientId, recipeId, measurement) VALUES (4, 2, '500gr');");
+        db.execSQL("INSERT INTO recipeIngredient (ingredientId, recipeId, measurement) VALUES (5, 2, '1L');");
+        db.execSQL("INSERT INTO recipeIngredient (ingredientId, recipeId, measurement) VALUES (6, 2, 'to serve');");
+    }
+
     // methode wordt uitgevoerd als database geupgrade wordt
     // hierin de vorige tabellen wegdoen en opnieuw creëren
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS category");
         db.execSQL("DROP TABLE IF EXISTS recipe");
+        db.execSQL("DROP TABLE IF EXISTS recipeIngredient");
+        db.execSQL("DROP TABLE IF EXISTS ingredient");
 
         // Create tables again
         onCreate(db);
