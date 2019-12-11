@@ -14,6 +14,7 @@
     <string name="menu_info">Information</string>
 
     <string name="addrecipe_recipelabel">Recipe</string>
+    <string name="addrecipe_instructionslabel">Instructions</string>
 
     <string name="info_githublinks">
         <a href="https://github.com/stijnhhh">Stijn Haerkens</a> &amp;

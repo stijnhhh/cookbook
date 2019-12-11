@@ -9,6 +9,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +35,7 @@ public class addRecipeFragment extends Fragment {
     private AddRecipeViewModel addRecipeViewModel;
 
     private Button addRecipeBtn;
+    private Button addIngredientBtn;
     private Spinner spinnerCategories;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -43,11 +46,18 @@ public class addRecipeFragment extends Fragment {
         root = inflater.inflate(R.layout.fragment_add_recipe, container, false);
         final TextView textView = root.findViewById(R.id.text_send);
         addRecipeBtn = root.findViewById(R.id.buttonAdd);
+        addIngredientBtn = root.findViewById(R.id.buttonAddIngredient);
 
         addRecipeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 buttonAdd_onClick();
+            }
+        });
+        addIngredientBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addIngredientInputFields();
             }
         });
 
@@ -68,6 +78,9 @@ public class addRecipeFragment extends Fragment {
         EditText editInstructions = (EditText) root.findViewById(R.id.editInstructions);
         String instructions = editName.getText().toString();
 
+        TableLayout table = (TableLayout) root.findViewById(R.id.tableIngredient);
+
+
         Category cat = db.getCategory(category);
 
         Recipe recipe = new Recipe();
@@ -77,6 +90,19 @@ public class addRecipeFragment extends Fragment {
 
         db.insertRecipe(recipe);
         Toast.makeText(getActivity(),db.getRecipes() + "",Toast.LENGTH_SHORT).show();
+    }
+
+    public void addIngredientInputFields(){
+        TableLayout table = (TableLayout) root.findViewById(R.id.tableIngredient);
+
+        TableRow tableRow = new TableRow(getContext());
+        EditText editMeasurement = new EditText(getContext());
+        EditText editIngredient = new EditText(getContext());
+
+        tableRow.addView(editMeasurement);
+        tableRow.addView(editIngredient);
+
+        table.addView(tableRow);
     }
 
     public void addCategoriesToSpinner(){
