@@ -62,8 +62,18 @@ public class addRecipeFragment extends Fragment {
         EditText editName = (EditText) root.findViewById(R.id.editRecipe);
         String name = editName.getText().toString();
 
+        Spinner mySpinner = (Spinner) root.findViewById(R.id.categoryspinner);
+        String category = mySpinner.getSelectedItem().toString();
+
+        EditText editInstructions = (EditText) root.findViewById(R.id.editInstructions);
+        String instructions = editName.getText().toString();
+
+        Category cat = db.getCategory(category);
+
         Recipe recipe = new Recipe();
         recipe.setName(name);
+        recipe.setCategoryId(cat.getCategoryId());
+        recipe.setInstructions(instructions);
 
         db.insertRecipe(recipe);
         Toast.makeText(getActivity(),db.getRecipes() + "",Toast.LENGTH_SHORT).show();

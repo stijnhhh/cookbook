@@ -5,12 +5,14 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import be.thomasmore.cookbook.ui.models.Category;
 import be.thomasmore.cookbook.ui.models.Recipe;
+
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -124,12 +126,39 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put("name", recipe.getName());
-        values.put("categoryId", 1);
+        values.put("categoryId", recipe.getCategoryId());
+        values.put("instructions", recipe.getInstructions());
+        values.put("picture", "");
 
+        Log.i("findid", values + " is the rec");
         long id = db.insert("recipe", null, values);
 
         db.close();
         return id;
+    }
+
+    public Category getCategory(String name) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(
+                "category",      // tabelnaam
+                new String[] { "categoryId", "name"}, // kolommen
+                "name = ?",  // selectie
+                new String[] { String.valueOf(name) }, // selectieparameters
+                null,           // groupby
+                null,           // having
+                null,           // sorting
+                null);          // ??
+
+        Category category = new Category();
+
+        if (cursor.moveToFirst()) {
+            category = new Category(cursor.getLong(0),
+                    cursor.getString(1));
+        }
+        cursor.close();
+        db.close();
+        return category;
     }
 
     public List<Recipe> getRecipes() {

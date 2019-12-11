@@ -28,6 +28,13 @@
             android:layout_height="wrap_content"
             android:id="@+id/categoryspinner"/>
 
+        <EditText
+            android:id="@+id/editInstructions"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            />
+
         <Button
             android:id="@+id/buttonAdd"
             android:layout_width="130dp"
