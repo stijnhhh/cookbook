@@ -26,6 +26,7 @@ import java.util.List;
 import be.thomasmore.cookbook.R;
 import be.thomasmore.cookbook.ui.helpers.DatabaseHelper;
 import be.thomasmore.cookbook.ui.models.Category;
+import be.thomasmore.cookbook.ui.models.Ingredient;
 import be.thomasmore.cookbook.ui.models.Recipe;
 
 public class addRecipeFragment extends Fragment {
@@ -79,7 +80,44 @@ public class addRecipeFragment extends Fragment {
         String instructions = editName.getText().toString();
 
         TableLayout table = (TableLayout) root.findViewById(R.id.tableIngredient);
+        String ingredient = "";
+        String measurement = "";
+        Log.i("findme", "Before table");
+        for(int i = 1, j = table.getChildCount(); i < j; i++) {
+            Log.i("findme", "tablechild loop");
+            View view = table.getChildAt(i);
+            if (view instanceof TableRow) {
+                Log.i("findme", "in tablerow");
+                TableRow row = (TableRow) view;
+                View measView = row.getChildAt(0);
+                Log.i("findme", measView + "");
+                if(measView instanceof EditText){
+                    Log.i("findme", "in measview");
+                    EditText measurementEdit = (EditText) measView;
+                    measurement = measurementEdit.getText().toString();
+                    Log.i("findme", measurement + "");
 
+                }
+                View ingredientView = row.getChildAt(1);
+                if(ingredientView instanceof  EditText){
+                    Log.i("findme", "in ingrview");
+                    EditText ingredientEdit = (EditText) ingredientView;
+                    ingredient = ingredientEdit.getText().toString();
+                    Log.i("findme", ingredient + "");
+
+                }
+                if (!db.ingredientExists(ingredient)){
+                    Log.i("findme", "ingreidnet doesnt exist");
+
+                    Ingredient ingredientObject = new Ingredient();
+                    ingredientObject.setName(ingredient);
+                    db.insertIngredient(ingredientObject);
+                    Log.i("findme", db.getIngredients() + "");
+                }else{
+                    Log.i("findme", "ingredient exists");
+                }
+            }
+        }
 
         Category cat = db.getCategory(category);
 

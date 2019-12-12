@@ -11,7 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import be.thomasmore.cookbook.ui.models.Category;
+import be.thomasmore.cookbook.ui.models.Ingredient;
 import be.thomasmore.cookbook.ui.models.Recipe;
+import be.thomasmore.cookbook.ui.models.RecipeIngredient;
 
 
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -57,6 +59,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_INGREDIENT);
 
         String CREATE_TABLE_RECIPEINGREDIENT = "CREATE TABLE recipeIngredient (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "recipeId INTEGER," +
                 "ingredientId INTEGER," +
                 "measurement TEXT," +
@@ -137,6 +140,33 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return id;
     }
 
+    public long insertIngredient(Ingredient ingredient) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("name", ingredient.getName());
+
+        long id = db.insert("ingredient", null, values);
+
+        db.close();
+        return id;
+    }
+
+    public long insertRecipeIngredient(RecipeIngredient recipeIngredient) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("ingredientId", recipeIngredient.getIngredientId());
+        values.put("recipeId", recipeIngredient.getRecipeId());
+        values.put("measurement", recipeIngredient.getMeasurement());
+
+
+        long id = db.insert("recipeIngredient", null, values);
+
+        db.close();
+        return id;
+    }
+
     public Category getCategory(String name) {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -159,6 +189,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return category;
+    }
+
+    public boolean ingredientExists(String name) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String selectQuery = "SELECT  * FROM ingredient WHERE name =?";
+
+        Cursor cursor = db.rawQuery(selectQuery, new String[] {name});
+        if(cursor.getCount() <= 0){
+            cursor.close();
+            return false;
+        }
+        cursor.close();
+        return true;
     }
 
     public List<Recipe> getRecipes() {
@@ -195,6 +239,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 Category category = new Category(cursor.getLong(0),
                         cursor.getString(1));
                 lijst.add(category);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return lijst;
+    }
+
+    public List<Ingredient> getIngredients() {
+        List<Ingredient> lijst = new ArrayList<Ingredient>();
+
+        String selectQuery = "SELECT  * FROM ingredient";
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Ingredient ingredient = new Ingredient(cursor.getLong(0),
+                        cursor.getString(1));
+                lijst.add(ingredient);
             } while (cursor.moveToNext());
         }
 
