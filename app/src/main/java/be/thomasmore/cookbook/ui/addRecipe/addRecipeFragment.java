@@ -28,6 +28,7 @@ import be.thomasmore.cookbook.ui.helpers.DatabaseHelper;
 import be.thomasmore.cookbook.ui.models.Category;
 import be.thomasmore.cookbook.ui.models.Ingredient;
 import be.thomasmore.cookbook.ui.models.Recipe;
+import be.thomasmore.cookbook.ui.models.RecipeIngredient;
 
 public class addRecipeFragment extends Fragment {
     private View root;
@@ -79,45 +80,6 @@ public class addRecipeFragment extends Fragment {
         EditText editInstructions = (EditText) root.findViewById(R.id.editInstructions);
         String instructions = editName.getText().toString();
 
-        TableLayout table = (TableLayout) root.findViewById(R.id.tableIngredient);
-        String ingredient = "";
-        String measurement = "";
-        Log.i("findme", "Before table");
-        for(int i = 1, j = table.getChildCount(); i < j; i++) {
-            Log.i("findme", "tablechild loop");
-            View view = table.getChildAt(i);
-            if (view instanceof TableRow) {
-                Log.i("findme", "in tablerow");
-                TableRow row = (TableRow) view;
-                View measView = row.getChildAt(0);
-                Log.i("findme", measView + "");
-                if(measView instanceof EditText){
-                    Log.i("findme", "in measview");
-                    EditText measurementEdit = (EditText) measView;
-                    measurement = measurementEdit.getText().toString();
-                    Log.i("findme", measurement + "");
-
-                }
-                View ingredientView = row.getChildAt(1);
-                if(ingredientView instanceof  EditText){
-                    Log.i("findme", "in ingrview");
-                    EditText ingredientEdit = (EditText) ingredientView;
-                    ingredient = ingredientEdit.getText().toString();
-                    Log.i("findme", ingredient + "");
-
-                }
-                if (!db.ingredientExists(ingredient)){
-                    Log.i("findme", "ingreidnet doesnt exist");
-
-                    Ingredient ingredientObject = new Ingredient();
-                    ingredientObject.setName(ingredient);
-                    db.insertIngredient(ingredientObject);
-                    Log.i("findme", db.getIngredients() + "");
-                }else{
-                    Log.i("findme", "ingredient exists");
-                }
-            }
-        }
 
         Category cat = db.getCategory(category);
 
@@ -126,8 +88,40 @@ public class addRecipeFragment extends Fragment {
         recipe.setCategoryId(cat.getCategoryId());
         recipe.setInstructions(instructions);
 
+        TableLayout table = (TableLayout) root.findViewById(R.id.tableIngredient);
+        String ingredient = "";
+        long ingredientId = 0;
+        String measurement = "";
+        for(int i = 1, j = table.getChildCount(); i < j; i++) {
+            View view = table.getChildAt(i);
+            if (view instanceof TableRow) {
+                TableRow row = (TableRow) view;
+                View measView = row.getChildAt(0);
+                if(measView instanceof EditText){
+                    EditText measurementEdit = (EditText) measView;
+                    measurement = measurementEdit.getText().toString();
+                }
+                View ingredientView = row.getChildAt(1);
+                if(ingredientView instanceof  EditText){
+                    EditText ingredientEdit = (EditText) ingredientView;
+                    ingredient = ingredientEdit.getText().toString();
+                }
+                if (!db.ingredientExists(ingredient)){
+                    Ingredient ingredientObject = new Ingredient();
+                    ingredientObject.setName(ingredient);
+                    db.insertIngredient(ingredientObject);
+                    ingredientId = ingredientObject.getIngredientId();
+                }
+                RecipeIngredient recipeIngredient = new RecipeIngredient();
+                recipeIngredient.setIngredientId(ingredientId);
+                recipeIngredient.setRecipeId(recipe.getRecipeId());
+                recipeIngredient.setMeasurement(measurement);
+                db.insertRecipeIngredient(recipeIngredient);
+            }
+        }
+
         db.insertRecipe(recipe);
-        Toast.makeText(getActivity(),db.getRecipes() + "",Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(),recipe.getName() + " added!",Toast.LENGTH_SHORT).show();
     }
 
     public void addIngredientInputFields(){

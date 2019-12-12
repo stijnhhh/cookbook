@@ -133,7 +133,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put("instructions", recipe.getInstructions());
         values.put("picture", "");
 
-        Log.i("findid", values + " is the rec");
         long id = db.insert("recipe", null, values);
 
         db.close();
