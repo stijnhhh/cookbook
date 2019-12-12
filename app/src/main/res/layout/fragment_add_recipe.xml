@@ -4,17 +4,71 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/text_send"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        android:text="Add Recipe"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_height="match_parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:fillViewport="true">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/text_send"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/addrecipe_recipelabel"
+            />
+        <EditText
+            android:id="@+id/editRecipe"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            />
+
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/categoryspinner"/>
+
+        <EditText
+            android:id="@+id/editInstructions"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:inputType="text|textMultiLine"
+            android:text="@string/addrecipe_instructionslabel"
+            />
+
+            <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tableIngredient">
+                <TableRow>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Measurement"
+                        android:layout_marginLeft="20px"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ingredient"/>
+
+                </TableRow>
+            </TableLayout>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/buttonAddIngredient"
+            android:text="New ingredient"/>
+        <Button
+            android:id="@+id/buttonAdd"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:text="Add recipe"
+            />
+    </LinearLayout>
+
+</ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
