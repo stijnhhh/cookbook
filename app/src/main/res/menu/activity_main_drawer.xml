@@ -24,6 +24,11 @@
             android:id="@+id/nav_info"
             android:icon="@drawable/cellphone_information"
             android:title="@string/menu_info" />
+
+        <item
+            android:id="@+id/nav_detail"
+            android:icon="@drawable/cellphone_information"
+            android:title="Detail TEMP" />
     </group>
 
 </menu>
