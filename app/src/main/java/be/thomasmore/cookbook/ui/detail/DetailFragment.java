@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TableLayout;
@@ -33,6 +34,7 @@ import be.thomasmore.cookbook.ui.addRecipe.AddRecipeViewModel;
 import be.thomasmore.cookbook.ui.helpers.DatabaseHelper;
 import be.thomasmore.cookbook.ui.helpers.HttpReader;
 import be.thomasmore.cookbook.ui.helpers.JsonHelper;
+import be.thomasmore.cookbook.ui.models.Favorite;
 import be.thomasmore.cookbook.ui.models.Recipe;
 import be.thomasmore.cookbook.ui.models.RecipeAPI;
 
@@ -40,6 +42,10 @@ public class DetailFragment extends Fragment {
 
     private DetailViewModel detailViewModel;
     private View root;
+    private Button favorite;
+    private DatabaseHelper db;
+    private RecipeAPI recipe;
+    private List<Favorite> listFavs;
 
     public static DetailFragment newInstance() {
         return new DetailFragment();
@@ -52,10 +58,20 @@ public class DetailFragment extends Fragment {
                 ViewModelProviders.of(this).get(DetailViewModel.class);
         root = inflater.inflate(R.layout.fragment_detail, container, false);
         final TextView textView = root.findViewById(R.id.text_send);
-
+        favorite = root.findViewById(R.id.favBtn);
+        favorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addToFavorite();
+            }
+        });
+        db = new DatabaseHelper(getActivity());
+        CustomListview customListview = (CustomListview) root.findViewById(R.id.customList);
+        listFavs = db.getFavorites();
         readRecipe();
         return root;
     }
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -71,7 +87,8 @@ public class DetailFragment extends Fragment {
             @Override
             public void resultReady(String result) {
                 JsonHelper jsonHelper = new JsonHelper();
-                RecipeAPI recipe = jsonHelper.getRecipe(result);
+
+                recipe = jsonHelper.getRecipe(result);
                 TextView recipeName = (TextView) root.findViewById(R.id.recipe_name);
                 recipeName.setText(recipe.getName());
                 TextView recipeInstructions = (TextView) root.findViewById(R.id.recipe_instructions);
@@ -90,11 +107,33 @@ public class DetailFragment extends Fragment {
                 ArrayAdapter<String> adapterIngredients = new ArrayAdapter<String>(getContext(),
                         android.R.layout.simple_list_item_1, ingredientList);
 
-                final ListView listViewIngredients = (ListView) root.findViewById(R.id.listviewIngredient);
+                final ListView listViewIngredients = (ListView) root.findViewById(R.id.customList);
                 listViewIngredients.setAdapter(adapterIngredients);
             }
         });
         httpReader.execute("https://www.themealdb.com/api/json/v1/1/search.php?s=Arrabiata");
+    }
+
+    private void addToFavorite(){
+        listFavs = db.getFavorites();
+        if(listFavs.size()>0){
+            for (Favorite favorite: listFavs) {
+                if(favorite.getRecipeId() != recipe.getRecipeId()){
+                    db.insertFavorite(recipe.getRecipeId());
+                    Snackbar.make(root, "Added " + recipe.getName() + " to favorites!", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }else{
+                    Snackbar.make(root, "Already added", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
+            }
+        }else{
+            db.insertFavorite(recipe.getRecipeId());
+            Snackbar.make(root, "Added " + recipe.getName() + " to favorites!", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+        }
+
+
     }
 
 }

@@ -21,7 +21,7 @@ public class JsonHelper {
 
         try {
             JSONObject jsonObjectStudent = new JSONObject(jsonTekst);
-
+            recipe.setRecipeId(jsonObjectStudent.getJSONArray("meals").getJSONObject(0).getInt("idMeal"));
             recipe.setName(jsonObjectStudent.getJSONArray("meals").getJSONObject(0).getString("strMeal"));
             Log.i("findme", recipe.getName());
             recipe.setInstructions(jsonObjectStudent.getJSONArray("meals").getJSONObject(0).getString("strInstructions"));

@@ -3,6 +3,7 @@ package be.thomasmore.cookbook.ui.models;
 import java.util.List;
 
 public class RecipeAPI {
+    private int recipeId;
     private String name;
     private String instructions;
     private String picture;
@@ -13,13 +14,22 @@ public class RecipeAPI {
     public RecipeAPI() {
     }
 
-    public RecipeAPI(String name, String instructions, String picture, String category, List<String> ingredients, List<String> measurements) {
+    public RecipeAPI(int recipeId, String name, String instructions, String picture, String category, List<String> ingredients, List<String> measurements) {
+        this.recipeId = recipeId;
         this.name = name;
         this.instructions = instructions;
         this.picture = picture;
         this.category = category;
         this.ingredients = ingredients;
         this.measurements = measurements;
+    }
+
+    public int getRecipeId() {
+        return recipeId;
+    }
+
+    public void setRecipeId(int recipeId) {
+        this.recipeId = recipeId;
     }
 
     public String getName() {
