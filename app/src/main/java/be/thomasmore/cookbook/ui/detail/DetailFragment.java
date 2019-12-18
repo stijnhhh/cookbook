@@ -51,6 +51,8 @@ public class DetailFragment extends Fragment {
         return new DetailFragment();
     }
 
+    public DetailFragment(){}
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -58,6 +60,7 @@ public class DetailFragment extends Fragment {
                 ViewModelProviders.of(this).get(DetailViewModel.class);
         root = inflater.inflate(R.layout.fragment_detail, container, false);
         final TextView textView = root.findViewById(R.id.text_send);
+
         favorite = root.findViewById(R.id.favBtn);
         favorite.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,29 +114,30 @@ public class DetailFragment extends Fragment {
                 listViewIngredients.setAdapter(adapterIngredients);
             }
         });
-        httpReader.execute("https://www.themealdb.com/api/json/v1/1/search.php?s=Arrabiata");
+        httpReader.execute("https://www.themealdb.com/api/json/v1/1/lookup.php?i=52773");
     }
 
     private void addToFavorite(){
+        List<Integer> favIds = new ArrayList<Integer>();
         listFavs = db.getFavorites();
         if(listFavs.size()>0){
             for (Favorite favorite: listFavs) {
-                if(favorite.getRecipeId() != recipe.getRecipeId()){
-                    db.insertFavorite(recipe.getRecipeId());
-                    Snackbar.make(root, "Added " + recipe.getName() + " to favorites!", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                }else{
-                    Snackbar.make(root, "Already added", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                }
+                favIds.add(favorite.getRecipeId());
             }
         }else{
             db.insertFavorite(recipe.getRecipeId());
             Snackbar.make(root, "Added " + recipe.getName() + " to favorites!", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
         }
-
-
+        Log.i("findme", favIds + "");
+        if(!favIds.contains(recipe.getRecipeId())){
+            db.insertFavorite(recipe.getRecipeId());
+            Snackbar.make(root, "Added " + recipe.getName() + " to favorites!", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+        }else{
+            Snackbar.make(root, "Already added", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+        }
     }
 
 }

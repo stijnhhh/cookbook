@@ -17,13 +17,10 @@ public class JsonHelper {
     public RecipeAPI getRecipe(String jsonTekst) {
         RecipeAPI recipe = new RecipeAPI();
 
-        Log.i("findme", jsonTekst + "in json helper");
-
         try {
             JSONObject jsonObjectStudent = new JSONObject(jsonTekst);
             recipe.setRecipeId(jsonObjectStudent.getJSONArray("meals").getJSONObject(0).getInt("idMeal"));
             recipe.setName(jsonObjectStudent.getJSONArray("meals").getJSONObject(0).getString("strMeal"));
-            Log.i("findme", recipe.getName());
             recipe.setInstructions(jsonObjectStudent.getJSONArray("meals").getJSONObject(0).getString("strInstructions"));
             recipe.setPicture(jsonObjectStudent.getJSONArray("meals").getJSONObject(0).getString("strMealThumb"));
             recipe.setCategory(jsonObjectStudent.getJSONArray("meals").getJSONObject(0).getString("strCategory"));

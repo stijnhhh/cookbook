@@ -32,7 +32,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         //vv Delete DB after changing table layout (adding or deleting columns) vv
-        context.deleteDatabase(DATABASE_NAME);
+        //context.deleteDatabase(DATABASE_NAME);
     }
 
     // methode wordt uitgevoerd als de database gecreëerd wordt
@@ -307,24 +307,4 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return lijst;
     }
 
-    public List<Favorite> getFavoritesRecipeIds() {
-        List<Favorite> lijst = new ArrayList<Favorite>();
-
-        String selectQuery = "SELECT  * FROM favorite";
-
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
-
-        if (cursor.moveToFirst()) {
-            do {
-                Favorite fav = new Favorite(
-                        cursor.getInt(1));
-                lijst.add(fav);
-            } while (cursor.moveToNext());
-        }
-
-        cursor.close();
-        db.close();
-        return lijst;
-    }
 }

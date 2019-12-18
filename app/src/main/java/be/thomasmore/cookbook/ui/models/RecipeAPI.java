@@ -79,4 +79,9 @@ public class RecipeAPI {
     public void setMeasurements(List<String> measurements) {
         this.measurements = measurements;
     }
+
+    @Override
+    public String toString(){
+        return name;
+    }
 }
