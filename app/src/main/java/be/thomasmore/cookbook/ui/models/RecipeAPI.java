@@ -1,21 +1,27 @@
 package be.thomasmore.cookbook.ui.models;
 
-public class Recipe {
+import java.util.List;
+
+public class RecipeAPI {
     private int recipeId;
     private String name;
     private String instructions;
     private String picture;
-    private long categoryId;
+    private String category;
+    private List<String> ingredients;
+    private List<String> measurements;
 
-    public Recipe() {
+    public RecipeAPI() {
     }
 
-    public Recipe(int recipeId, String name, String instructions, String picture, long categoryId) {
+    public RecipeAPI(int recipeId, String name, String instructions, String picture, String category, List<String> ingredients, List<String> measurements) {
         this.recipeId = recipeId;
         this.name = name;
         this.instructions = instructions;
         this.picture = picture;
-        this.categoryId = categoryId;
+        this.category = category;
+        this.ingredients = ingredients;
+        this.measurements = measurements;
     }
 
     public int getRecipeId() {
@@ -34,14 +40,6 @@ public class Recipe {
         this.name = name;
     }
 
-    public long getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(long categoryId) {
-        this.categoryId = categoryId;
-    }
-
     public String getInstructions() {
         return instructions;
     }
@@ -56,6 +54,30 @@ public class Recipe {
 
     public void setPicture(String picture) {
         this.picture = picture;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public List<String> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(List<String> ingredients) {
+        this.ingredients = ingredients;
+    }
+
+    public List<String> getMeasurements() {
+        return measurements;
+    }
+
+    public void setMeasurements(List<String> measurements) {
+        this.measurements = measurements;
     }
 
     @Override

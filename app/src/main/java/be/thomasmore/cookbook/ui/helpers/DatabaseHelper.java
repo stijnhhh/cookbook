@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import be.thomasmore.cookbook.ui.models.Category;
+import be.thomasmore.cookbook.ui.models.Favorite;
 import be.thomasmore.cookbook.ui.models.Ingredient;
 import be.thomasmore.cookbook.ui.models.Recipe;
 import be.thomasmore.cookbook.ui.models.RecipeIngredient;
@@ -31,13 +32,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         //vv Delete DB after changing table layout (adding or deleting columns) vv
-        context.deleteDatabase(DATABASE_NAME);
+        //context.deleteDatabase(DATABASE_NAME);
     }
 
     // methode wordt uitgevoerd als de database gecreëerd wordt
     // hierin de tables creëren en opvullen met gegevens
     @Override
     public void onCreate(SQLiteDatabase db) {
+
+        String CREATE_TABLE_FAVORITE= "CREATE TABLE favorite (" +
+                "favoriteId INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "recipeId INTEGER)";
+        db.execSQL(CREATE_TABLE_FAVORITE);
 
         String CREATE_TABLE_CATEGORY= "CREATE TABLE category (" +
                 "categoryId INTEGER PRIMARY KEY," +
@@ -114,6 +120,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS recipe");
         db.execSQL("DROP TABLE IF EXISTS recipeIngredient");
         db.execSQL("DROP TABLE IF EXISTS ingredient");
+        db.execSQL("DROP TABLE IF EXISTS favorite");
 
         // Create tables again
         onCreate(db);
@@ -166,6 +173,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return id;
     }
 
+    public long insertFavorite(int recipeId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("recipeId", recipeId);
+
+        long id = db.insert("favorite", null, values);
+
+        db.close();
+        return id;
+    }
+
     public Category getCategory(String name) {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -189,7 +208,53 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
         return category;
     }
+    public Recipe getRecipe(int recipeId) {
+        SQLiteDatabase db = this.getReadableDatabase();
 
+        Cursor cursor = db.query(
+                "recipe",      // tabelnaam
+                new String[] { "recipeId", "name", "instructions", "picture", "categoryId"}, // kolommen
+                "recipeId = ?",  // selectie
+                new String[] { String.valueOf(recipeId) }, // selectieparameters
+                null,           // groupby
+                null,           // having
+                null,           // sorting
+                null);          // ??
+
+        Recipe recipe = new Recipe();
+
+        if (cursor.moveToFirst()) {
+            recipe = new Recipe(cursor.getInt(0),
+                    cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getLong(4));
+        }
+        cursor.close();
+        db.close();
+        return recipe;
+    }
+
+    public Ingredient getIngredient(long ingredientId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(
+                "ingredient",      // tabelnaam
+                new String[] { "ingredientId", "name"}, // kolommen
+                "ingredientId = ?",  // selectie
+                new String[] { String.valueOf(ingredientId) }, // selectieparameters
+                null,           // groupby
+                null,           // having
+                null,           // sorting
+                null);          // ??
+
+        Ingredient ingredient = new Ingredient();
+
+        if (cursor.moveToFirst()) {
+            ingredient = new Ingredient(cursor.getInt(0),
+                    cursor.getString(1));
+        }
+        cursor.close();
+        db.close();
+        return ingredient;
+    }
     public boolean ingredientExists(String name) {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -214,7 +279,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         if (cursor.moveToFirst()) {
             do {
-                Recipe recipe = new Recipe(cursor.getLong(0),
+                Recipe recipe = new Recipe(cursor.getInt(0),
                         cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getLong(4));
                 lijst.add(recipe);
             } while (cursor.moveToNext());
@@ -224,7 +289,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
         return lijst;
     }
+    public List<RecipeIngredient> getRecipeIngredients(int recipeId) {
+        List<RecipeIngredient> lijst = new ArrayList<RecipeIngredient>();
 
+        String selectQuery = "SELECT  * FROM recipeIngredient WHERE recipeId = " + recipeId;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                RecipeIngredient recipeIngredient = new RecipeIngredient(cursor.getInt(0),
+                        cursor.getInt(1), cursor.getString(2));
+                lijst.add(recipeIngredient);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return lijst;
+    }
     public List<Category> getCategories() {
         List<Category> lijst = new ArrayList<Category>();
 
@@ -266,4 +350,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
         return lijst;
     }
+
+    public List<Favorite> getFavorites() {
+        List<Favorite> lijst = new ArrayList<Favorite>();
+
+        String selectQuery = "SELECT  * FROM favorite";
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Favorite fav = new Favorite(cursor.getInt(0),
+                        cursor.getInt(1));
+                lijst.add(fav);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return lijst;
+    }
+
 }
