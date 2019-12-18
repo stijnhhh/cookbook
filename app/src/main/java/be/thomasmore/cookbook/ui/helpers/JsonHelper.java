@@ -1,6 +1,9 @@
 package be.thomasmore.cookbook.ui.helpers;
 
 import android.util.Log;
+import be.thomasmore.cookbook.ui.models.Ingredient;
+import be.thomasmore.cookbook.ui.models.Recipe;
+import be.thomasmore.cookbook.ui.models.RecipeAPI;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,6 +23,7 @@ public class JsonHelper {
 
             JSONObject jsonObjectCategory = new JSONObject(jsonTekst);
             JSONArray jsonArrayCategories = jsonObjectCategory.getJSONArray("meals");
+            
             for (int i = 0; i < jsonArrayCategories.length(); i++) {
                 JSONObject jsonObjectCategory2 = jsonArrayCategories.getJSONObject(i);
 
@@ -34,5 +38,44 @@ public class JsonHelper {
 
         return lijst;
     }
-}
 
+
+    public RecipeAPI getRecipe(String jsonTekst) {
+        RecipeAPI recipe = new RecipeAPI();
+
+        try {
+            JSONObject jsonObjectStudent = new JSONObject(jsonTekst);
+            recipe.setRecipeId(jsonObjectStudent.getJSONArray("meals").getJSONObject(0).getInt("idMeal"));
+            recipe.setName(jsonObjectStudent.getJSONArray("meals").getJSONObject(0).getString("strMeal"));
+            recipe.setInstructions(jsonObjectStudent.getJSONArray("meals").getJSONObject(0).getString("strInstructions"));
+            recipe.setPicture(jsonObjectStudent.getJSONArray("meals").getJSONObject(0).getString("strMealThumb"));
+            recipe.setCategory(jsonObjectStudent.getJSONArray("meals").getJSONObject(0).getString("strCategory"));
+            int teller = 1;
+            List<String> ingredients = new ArrayList<String>();
+            while(teller <= 20){
+                String ingredient = jsonObjectStudent.getJSONArray("meals").getJSONObject(0).getString("strIngredient" + teller);
+                if(!ingredient.isEmpty()){
+                    ingredients.add(ingredient);
+                }
+                teller++;
+            }
+            recipe.setIngredients(ingredients);
+            teller = 1;
+            List<String> measurements = new ArrayList<String>();
+            while(teller <= 20){
+                String measure = jsonObjectStudent.getJSONArray("meals").getJSONObject(0).getString("strMeasure" + teller);
+                if(!measure.isEmpty()){
+                    measurements.add(measure);
+                }
+                teller++;
+            }
+            recipe.setMeasurements(measurements);
+
+        } catch (JSONException e) {
+            Log.e("JSON Parser", "Error parsing data " + e.toString());
+        }
+
+        return recipe;
+    }
+
+}

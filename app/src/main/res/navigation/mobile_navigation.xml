@@ -16,7 +16,11 @@
         android:name="be.thomasmore.cookbook.ui.favorite.FavoriteFragment"
         android:label="@string/menu_favorite"
         tools:layout="@layout/fragment_favorite" />
-
+    <fragment
+        android:id="@+id/nav_your_recipes"
+        android:name="be.thomasmore.cookbook.ui.yourRecipes.YourRecipes"
+        android:label="Your recipes"
+        tools:layout="@layout/your_recipes_fragment" />
     <fragment
         android:id="@+id/nav_addRecipe"
         android:name="be.thomasmore.cookbook.ui.addRecipe.addRecipeFragment"
@@ -35,4 +39,15 @@
         android:label="@string/menu_info"
         tools:layout="@layout/fragment_info" />
 
+    <fragment
+        android:id="@+id/nav_detail"
+        android:name="be.thomasmore.cookbook.ui.detail.DetailFragment"
+        android:label="Recipe"
+        tools:layout="@layout/fragment_detail" />
+
+    <fragment
+        android:id="@+id/nav_detail_custom"
+        android:name="be.thomasmore.cookbook.ui.detail.DetailCustomRecipe"
+        android:label="Recipe"
+        tools:layout="@layout/detail_custom_recipe_fragment" />
 </navigation>

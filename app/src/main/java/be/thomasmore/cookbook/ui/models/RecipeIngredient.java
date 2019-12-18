@@ -38,4 +38,8 @@ public class RecipeIngredient {
         this.recipeId = recipeId;
     }
 
+    @Override
+    public String toString(){
+        return measurement + " Recipe: " + recipeId + " Ingredient: " + ingredientId;
+    }
 }
