@@ -48,6 +48,7 @@ public class DetailFragment extends Fragment {
     private List<Favorite> listFavs;
     private int recipeId;
 
+    List<Integer> favIds = new ArrayList<Integer>();
 
     public static DetailFragment newInstance() {
         return new DetailFragment();
@@ -67,12 +68,24 @@ public class DetailFragment extends Fragment {
         favorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addToFavorite();
+                if(favorite.getText() == "Remove from favorites"){
+                    db.deleteFavorite(recipeId);
+                    favorite.setText("Add to favorites");
+                } else {
+                    addToFavorite();
+                    favorite.setText("Remove from favorites");
+                }
             }
         });
         db = new DatabaseHelper(getActivity());
         CustomListview customListview = (CustomListview) root.findViewById(R.id.customList);
         listFavs = db.getFavorites();
+        for (Favorite favorite: listFavs) {
+            favIds.add(favorite.getRecipeId());
+        }
+        if(listFavs.contains(recipeId)){
+            favorite.setText("Remove from favorites");
+        }
         readRecipe(recipeId);
         return root;
     }
@@ -120,7 +133,6 @@ public class DetailFragment extends Fragment {
     }
 
     private void addToFavorite(){
-        List<Integer> favIds = new ArrayList<Integer>();
         listFavs = db.getFavorites();
         if(listFavs.size()>0){
             for (Favorite favorite: listFavs) {

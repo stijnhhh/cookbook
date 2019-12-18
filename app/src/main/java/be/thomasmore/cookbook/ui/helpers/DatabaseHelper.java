@@ -372,4 +372,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return lijst;
     }
 
+    // delete-methode
+    public boolean deleteRecipe(long id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        int numrows = db.delete(
+                "recipe",
+                "recipeId = ?",
+                new String[] { String.valueOf(id) });
+
+        db.close();
+        return numrows > 0;
+    }
+    // delete-methode
+    public boolean deleteFavorite(long id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        int numrows = db.delete(
+                "favorite",
+                "recipeId = ?",
+                new String[] { String.valueOf(id) });
+
+        db.close();
+        return numrows > 0;
+    }
 }

@@ -45,7 +45,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/favBtn"
-                android:text="fav"/>
+                android:text="Add to favorites"/>
 
         </LinearLayout>
     </ScrollView>
