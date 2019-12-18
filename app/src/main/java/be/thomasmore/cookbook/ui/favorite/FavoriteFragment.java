@@ -23,7 +23,6 @@ import java.util.List;
 
 import be.thomasmore.cookbook.R;
 import be.thomasmore.cookbook.ui.detail.CustomListview;
-import be.thomasmore.cookbook.ui.detail.DetailActivity;
 import be.thomasmore.cookbook.ui.detail.DetailFragment;
 import be.thomasmore.cookbook.ui.helpers.DatabaseHelper;
 import be.thomasmore.cookbook.ui.helpers.HttpReader;
@@ -31,12 +30,16 @@ import be.thomasmore.cookbook.ui.helpers.JsonHelper;
 import be.thomasmore.cookbook.ui.models.Favorite;
 import be.thomasmore.cookbook.ui.models.RecipeAPI;
 
+
+
 public class FavoriteFragment extends Fragment {
 
     private FavoriteViewModel favoriteViewModel;
     private View root;
     private DatabaseHelper db;
     private List<Favorite> listFavs;
+
+    public static FavoriteFragment newInstance() { return new FavoriteFragment(); }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -63,8 +66,6 @@ public class FavoriteFragment extends Fragment {
                 public void resultReady(String result) {
                     JsonHelper jsonHelper = new JsonHelper();
                     RecipeAPI recipe = jsonHelper.getRecipe(result);
-                    List<String> ingredients = recipe.getIngredients();
-                    List<String> measurements = recipe.getMeasurements();
                     recipes.add(recipe);
                     if(listFavs.size() == recipes.size()){
                         Log.i("findme", "" + listFavs.size());
@@ -95,9 +96,11 @@ public class FavoriteFragment extends Fragment {
 
     public void onClick(int recipeId){
         Fragment fragment = new DetailFragment();
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.nav_detail, fragment);
+        Bundle args = new Bundle();
+        args.putInt("id", recipeId);
+        fragment.setArguments(args);
+        FragmentTransaction fragmentTransaction = this.getFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.nav_host_fragment, fragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
