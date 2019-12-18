@@ -1,5 +1,6 @@
 package be.thomasmore.cookbook.ui.detail;
 
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
@@ -30,6 +31,7 @@ import be.thomasmore.cookbook.ui.models.Favorite;
 import be.thomasmore.cookbook.ui.models.Recipe;
 import be.thomasmore.cookbook.ui.models.RecipeAPI;
 import be.thomasmore.cookbook.ui.models.RecipeIngredient;
+import be.thomasmore.cookbook.ui.yourRecipes.YourRecipes;
 
 public class DetailCustomRecipe extends Fragment {
 
@@ -39,7 +41,7 @@ public class DetailCustomRecipe extends Fragment {
     private Recipe recipe;
     private List<Favorite> listFavs;
     private int recipeId;
-    private Button favorite;
+    private Button deleteBtn;
 
     public static DetailCustomRecipe newInstance() {
         return new DetailCustomRecipe();
@@ -54,6 +56,13 @@ public class DetailCustomRecipe extends Fragment {
         db = new DatabaseHelper(getActivity());
         Bundle args = getArguments();
         recipeId = args.getInt("id", 0);
+        deleteBtn = root.findViewById(R.id.deleteRecipeBtn);
+        deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteRecipe(recipeId);
+            }
+        });
         readRecipe(recipeId);
         return root;
     }
@@ -83,5 +92,14 @@ public class DetailCustomRecipe extends Fragment {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(DetailCustomRecipeViewModel.class);
         // TODO: Use the ViewModel
+    }
+
+    public void deleteRecipe(int recipeId){
+        db.deleteRecipe(recipeId);
+        Fragment fragment = new YourRecipes();
+        FragmentTransaction fragmentTransaction = this.getFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.nav_host_fragment, fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 }
