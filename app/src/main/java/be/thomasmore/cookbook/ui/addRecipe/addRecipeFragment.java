@@ -78,7 +78,7 @@ public class addRecipeFragment extends Fragment {
         String category = mySpinner.getSelectedItem().toString();
 
         EditText editInstructions = (EditText) root.findViewById(R.id.editInstructions);
-        String instructions = editName.getText().toString();
+        String instructions = editInstructions.getText().toString();
 
 
         Category cat = db.getCategory(category);
@@ -88,6 +88,7 @@ public class addRecipeFragment extends Fragment {
         recipe.setCategoryId(cat.getCategoryId());
         recipe.setInstructions(instructions);
 
+        long recipeId = db.insertRecipe(recipe);
         TableLayout table = (TableLayout) root.findViewById(R.id.tableIngredient);
         String ingredient = "";
         long ingredientId = 0;
@@ -102,25 +103,23 @@ public class addRecipeFragment extends Fragment {
                     measurement = measurementEdit.getText().toString();
                 }
                 View ingredientView = row.getChildAt(1);
-                if(ingredientView instanceof  EditText){
+                if(ingredientView instanceof  EditText) {
                     EditText ingredientEdit = (EditText) ingredientView;
                     ingredient = ingredientEdit.getText().toString();
                 }
-                if (!db.ingredientExists(ingredient)){
-                    Ingredient ingredientObject = new Ingredient();
-                    ingredientObject.setName(ingredient);
-                    db.insertIngredient(ingredientObject);
-                    ingredientId = ingredientObject.getIngredientId();
-                }
+                Ingredient ingredientObject = new Ingredient();
+                ingredientObject.setName(ingredient);
+                ingredientId = db.insertIngredient(ingredientObject);
+
                 RecipeIngredient recipeIngredient = new RecipeIngredient();
                 recipeIngredient.setIngredientId(ingredientId);
-                recipeIngredient.setRecipeId(recipe.getRecipeId());
+                recipeIngredient.setRecipeId(recipeId);
                 recipeIngredient.setMeasurement(measurement);
+                Log.i("findme", recipeIngredient + "");
                 db.insertRecipeIngredient(recipeIngredient);
             }
         }
 
-        db.insertRecipe(recipe);
         Toast.makeText(getActivity(),recipe.getName() + " added!",Toast.LENGTH_SHORT).show();
     }
 

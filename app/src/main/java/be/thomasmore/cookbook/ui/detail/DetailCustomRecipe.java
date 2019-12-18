@@ -66,10 +66,10 @@ public class DetailCustomRecipe extends Fragment {
         recipeInstructions.setText(recipe.getInstructions());
 
         List<RecipeIngredient> recipeIngredients = db.getRecipeIngredients(recipeId);
-
         List<String> ingredientList = new ArrayList<String>();
         for(RecipeIngredient recipeIngredient: recipeIngredients){
             ingredientList.add(recipeIngredient.getMeasurement() + " " + db.getIngredient(recipeIngredient.getIngredientId()));
+
         }
 
         ArrayAdapter<String> adapterIngredients = new ArrayAdapter<String>(getContext(),
