@@ -12,6 +12,12 @@
             android:id="@+id/nav_favorite"
             android:icon="@drawable/heart"
             android:title="@string/menu_favorite" />
+
+        <item
+            android:id="@+id/nav_your_recipes"
+            android:icon="@drawable/ic_loyalty_black_24dp"
+            android:title="Your recipes" />
+
         <item
             android:id="@+id/nav_addRecipe"
             android:icon="@drawable/plus_circle"
@@ -28,7 +34,9 @@
         <item
             android:id="@+id/nav_detail_custom"
             android:icon="@drawable/cellphone_information"
-            android:title="Detail TEMP" />
+            android:title="Recipe" />
+
+
     </group>
 
 </menu>

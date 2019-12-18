@@ -52,26 +52,20 @@ public class DetailCustomRecipe extends Fragment {
                 ViewModelProviders.of(this).get(DetailCustomRecipeViewModel.class);
         root = inflater.inflate(R.layout.detail_custom_recipe_fragment, container, false);
         db = new DatabaseHelper(getActivity());
-        listFavs = db.getFavorites();
-        favorite = root.findViewById(R.id.favBtn);
-        favorite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                addToFavorite();
-            }
-        });
-        readRecipe();
+        Bundle args = getArguments();
+        recipeId = args.getInt("id", 0);
+        readRecipe(recipeId);
         return root;
     }
-    private void readRecipe()
+    private void readRecipe(int recipeId)
     {
-        recipe = db.getRecipe(1);
+        recipe = db.getRecipe(recipeId);
         TextView recipeName = (TextView) root.findViewById(R.id.recipe_name);
         recipeName.setText(recipe.getName());
         TextView recipeInstructions = (TextView) root.findViewById(R.id.recipe_instructions);
         recipeInstructions.setText(recipe.getInstructions());
 
-        List<RecipeIngredient> recipeIngredients = db.getRecipeIngredients(recipe.getRecipeId());
+        List<RecipeIngredient> recipeIngredients = db.getRecipeIngredients(recipeId);
 
         List<String> ingredientList = new ArrayList<String>();
         for(RecipeIngredient recipeIngredient: recipeIngredients){
@@ -89,26 +83,5 @@ public class DetailCustomRecipe extends Fragment {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(DetailCustomRecipeViewModel.class);
         // TODO: Use the ViewModel
-    }
-    private void addToFavorite(){
-        List<Integer> favIds = new ArrayList<Integer>();
-        listFavs = db.getFavorites();
-        if(listFavs.size()>0){
-            for (Favorite favorite: listFavs) {
-                favIds.add(favorite.getRecipeId());
-            }
-            if(!favIds.contains(recipe.getRecipeId())){
-                db.insertFavorite(recipe.getRecipeId());
-                Snackbar.make(root, "Added " + recipe.getName() + " to favorites!", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }else{
-                Snackbar.make(root, "Already added", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        }else{
-            db.insertFavorite(recipe.getRecipeId());
-            Snackbar.make(root, "Added " + recipe.getName() + " to favorites!", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
-        }
     }
 }

@@ -41,11 +41,6 @@
                 android:layout_height="wrap_content"
                 android:textSize="32px"
                 android:textColor="#000"/>
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/favBtn"
-                android:text="fav"/>
 
         </LinearLayout>
     </ScrollView>
