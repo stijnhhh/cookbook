@@ -26,7 +26,7 @@
             android:title="@string/menu_info" />
 
         <item
-            android:id="@+id/nav_detail"
+            android:id="@+id/nav_detail_custom"
             android:icon="@drawable/cellphone_information"
             android:title="Detail TEMP" />
     </group>

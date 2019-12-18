@@ -208,7 +208,53 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
         return category;
     }
+    public Recipe getRecipe(int recipeId) {
+        SQLiteDatabase db = this.getReadableDatabase();
 
+        Cursor cursor = db.query(
+                "recipe",      // tabelnaam
+                new String[] { "recipeId", "name", "instructions", "picture", "categoryId"}, // kolommen
+                "recipeId = ?",  // selectie
+                new String[] { String.valueOf(recipeId) }, // selectieparameters
+                null,           // groupby
+                null,           // having
+                null,           // sorting
+                null);          // ??
+
+        Recipe recipe = new Recipe();
+
+        if (cursor.moveToFirst()) {
+            recipe = new Recipe(cursor.getInt(0),
+                    cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getLong(4));
+        }
+        cursor.close();
+        db.close();
+        return recipe;
+    }
+
+    public Ingredient getIngredient(long ingredientId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(
+                "ingredient",      // tabelnaam
+                new String[] { "ingredientId", "name"}, // kolommen
+                "ingredientId = ?",  // selectie
+                new String[] { String.valueOf(ingredientId) }, // selectieparameters
+                null,           // groupby
+                null,           // having
+                null,           // sorting
+                null);          // ??
+
+        Ingredient ingredient = new Ingredient();
+
+        if (cursor.moveToFirst()) {
+            ingredient = new Ingredient(cursor.getInt(0),
+                    cursor.getString(1));
+        }
+        cursor.close();
+        db.close();
+        return ingredient;
+    }
     public boolean ingredientExists(String name) {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -233,7 +279,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         if (cursor.moveToFirst()) {
             do {
-                Recipe recipe = new Recipe(cursor.getLong(0),
+                Recipe recipe = new Recipe(cursor.getInt(0),
                         cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getLong(4));
                 lijst.add(recipe);
             } while (cursor.moveToNext());
@@ -243,7 +289,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
         return lijst;
     }
+    public List<RecipeIngredient> getRecipeIngredients(int recipeId) {
+        List<RecipeIngredient> lijst = new ArrayList<RecipeIngredient>();
 
+        String selectQuery = "SELECT  * FROM recipeIngredient WHERE recipeId = " + recipeId;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                RecipeIngredient recipeIngredient = new RecipeIngredient(cursor.getInt(0),
+                        cursor.getInt(1), cursor.getString(2));
+                lijst.add(recipeIngredient);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return lijst;
+    }
     public List<Category> getCategories() {
         List<Category> lijst = new ArrayList<Category>();
 

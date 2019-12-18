@@ -1,7 +1,7 @@
 package be.thomasmore.cookbook.ui.models;
 
 public class Recipe {
-    private long recipeId;
+    private int recipeId;
     private String name;
     private String instructions;
     private String picture;
@@ -10,7 +10,7 @@ public class Recipe {
     public Recipe() {
     }
 
-    public Recipe(long recipeId, String name, String instructions, String picture, long categoryId) {
+    public Recipe(int recipeId, String name, String instructions, String picture, long categoryId) {
         this.recipeId = recipeId;
         this.name = name;
         this.instructions = instructions;
@@ -18,11 +18,11 @@ public class Recipe {
         this.categoryId = categoryId;
     }
 
-    public long getRecipeId() {
+    public int getRecipeId() {
         return recipeId;
     }
 
-    public void setRecipeId(long recipeId) {
+    public void setRecipeId(int recipeId) {
         this.recipeId = recipeId;
     }
 
