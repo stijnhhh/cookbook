@@ -39,6 +39,94 @@ public class JsonHelper {
         return lijst;
     }
 
+    public List<RecipeAPI> getAllRecipes(String jsonTekst) {
+        List<RecipeAPI> lijst = new ArrayList<RecipeAPI>();
+
+        try {
+            JSONObject eersteJsonObject = new JSONObject(jsonTekst);
+            JSONArray mealsArray = eersteJsonObject.getJSONArray("meals");
+
+            for (int i = 0; i < mealsArray.length(); i++) {
+                JSONObject recipeObject = mealsArray.getJSONObject(i);
+
+                ArrayList<String> ingredients = new ArrayList<String>();
+                ArrayList<String> measurements = new ArrayList<String>();
+
+                for (int j = 1; j < 21; j++) {
+                    if (recipeObject.getString("strIngredient" + j) != "") {
+                        ingredients.add(recipeObject.getString("strIngredient" + j));
+                        measurements.add(recipeObject.getString("strMeasure" + j));
+                    } else
+                    {
+                        j = 21;
+                    }
+                }
+
+                RecipeAPI recipeAPI = new RecipeAPI();
+                recipeAPI.setCategory(recipeObject.getString("strCategory"));
+                recipeAPI.setIngredients(ingredients);
+                recipeAPI.setInstructions(recipeObject.getString("strInstructions"));
+                recipeAPI.setMeasurements(measurements);
+                recipeAPI.setName(recipeObject.getString("strMeal"));
+                recipeAPI.setPicture(recipeObject.getString("strMealThumb"));
+                recipeAPI.setRecipeId(Integer.parseInt(recipeObject.getString("idMeal")));
+
+                lijst.add(recipeAPI);
+            }
+        } catch (JSONException e){
+            Log.e("JSON Parser", "Error parsing data " + e.toString());
+        }
+
+        return lijst;
+    }
+
+    public List<RecipeAPI> getRecipesByCategory(String jsonTekst) {
+        List<RecipeAPI> lijst = new ArrayList<RecipeAPI>();
+
+        try {
+            JSONObject eersteJsonObject = new JSONObject(jsonTekst);
+            JSONArray mealsArray = eersteJsonObject.getJSONArray("meals");
+
+            for (int i = 0; i < mealsArray.length(); i++) {
+                JSONObject recipeObject = mealsArray.getJSONObject(i);
+
+                RecipeAPI recipeAPI = new RecipeAPI();
+                recipeAPI.setName(recipeObject.getString("strMeal"));
+                recipeAPI.setPicture(recipeObject.getString("strMealThumb"));
+                recipeAPI.setRecipeId(Integer.parseInt(recipeObject.getString("idMeal")));
+
+                lijst.add(recipeAPI);
+            }
+        } catch (JSONException e){
+            Log.e("JSON Parser", "Error parsing data " + e.toString());
+        }
+
+        return lijst;
+    }
+
+    public List<RecipeAPI> getRecipesByName(String jsonTekst) {
+        List<RecipeAPI> lijst = new ArrayList<RecipeAPI>();
+
+        try {
+            JSONObject eersteJsonObject = new JSONObject(jsonTekst);
+            JSONArray mealsArray = eersteJsonObject.getJSONArray("meals");
+
+            for (int i = 0; i < mealsArray.length(); i++) {
+                JSONObject recipeObject = mealsArray.getJSONObject(i);
+
+                RecipeAPI recipeAPI = new RecipeAPI();
+                recipeAPI.setName(recipeObject.getString("strMeal"));
+                recipeAPI.setPicture(recipeObject.getString("strMealThumb"));
+                recipeAPI.setRecipeId(Integer.parseInt(recipeObject.getString("idMeal")));
+
+                lijst.add(recipeAPI);
+            }
+        } catch (JSONException e){
+            Log.e("JSON Parser", "Error parsing data " + e.toString());
+        }
+
+        return lijst;
+    }
 
     public RecipeAPI getRecipe(String jsonTekst) {
         RecipeAPI recipe = new RecipeAPI();
