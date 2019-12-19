@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import java.util.List;
 
@@ -31,6 +32,11 @@ public class RecipeFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+
+        if (container != null) {
+            container.removeAllViews();
+        }
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Recipes");
 
         View root = inflater.inflate(R.layout.fragment_recipe, container, false);
         spinner = root.findViewById(R.id.categoryspinner);

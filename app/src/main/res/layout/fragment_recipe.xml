@@ -18,7 +18,8 @@
             android:id="@+id/search_by_category"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Zoek op Categorie"/>
+            android:text="Zoek op Categorie"
+            android:backgroundTint="@color/buttonColor2"/>
     </LinearLayout>
 
     <LinearLayout
@@ -35,11 +36,14 @@
             android:id="@+id/search_by_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Zoek op naam"/>
+            android:text="Zoek op naam"
+            android:backgroundTint="@color/buttonColor2"/>
     </LinearLayout>
     <ListView
         android:id="@+id/listViewPlatforms"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:dividerHeight="1dp"/>
+        android:dividerHeight="1dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"/>
 </LinearLayout>

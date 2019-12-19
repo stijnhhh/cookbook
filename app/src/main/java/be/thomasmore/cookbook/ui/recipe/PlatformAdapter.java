@@ -2,6 +2,7 @@ package be.thomasmore.cookbook.ui.recipe;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,9 +13,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import java.util.List;
 
 import be.thomasmore.cookbook.R;
+import be.thomasmore.cookbook.ui.detail.DetailFragment;
 import be.thomasmore.cookbook.ui.helpers.DatabaseHelper;
 import be.thomasmore.cookbook.ui.helpers.DownloadImageTask;
 import be.thomasmore.cookbook.ui.models.Favorite;
@@ -38,7 +46,7 @@ public class PlatformAdapter extends ArrayAdapter<RecipeAPI> {
 
         final TextView textName = (TextView) rowView.findViewById(R.id.name);
         final ImageView mealImage = (ImageView) rowView.findViewById(R.id.meal_image);
-        final Button addToFavoriteButton = (Button) rowView.findViewById(R.id.add_to_favorite);
+        final Button addToFavoriteButton = (Button) rowView.findViewById(R.id.go_to_details);
 
         textName.setText(values.get(position).getName());
 
@@ -48,20 +56,16 @@ public class PlatformAdapter extends ArrayAdapter<RecipeAPI> {
         addToFavoriteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DatabaseHelper db = new DatabaseHelper(getContext());
                 int recipeID =  values.get(position).getRecipeId();
-                String recipe = values.get(position).getName();
+                DetailFragment fragment = new DetailFragment();
+                Bundle args = new Bundle();
+                args.putInt("id", recipeID);
+                fragment.setArguments(args);
+                ((FragmentActivity) getContext()).getFragmentManager().beginTransaction()
+                        .replace(R.id.nav_host_fragment, fragment)
+                        .commit();
 
-                if(db.getFavorite(recipeID).size() == 0)
-                {
-                    db.insertFavorite(recipeID);
 
-                    toon(recipe + " is added to favorites!!");
-                } else
-                {
-                    Log.d("lol", "" + db.getFavorite(recipeID).size());
-                    toon(recipe + " is already added!!");
-                }
             }
         });
 
