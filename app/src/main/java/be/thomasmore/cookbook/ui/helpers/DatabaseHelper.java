@@ -372,6 +372,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return lijst;
     }
 
+    public List<Favorite> getFavorite(int recipeID) {
+        List<Favorite> lijst = new ArrayList<Favorite>();
+
+        String selectQuery = "SELECT  * FROM favorite WHERE recipeId = " + recipeID;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Favorite fav = new Favorite(cursor.getInt(0),
+                        cursor.getInt(1));
+                lijst.add(fav);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return lijst;
+    }
+
     // delete-methode
     public boolean deleteRecipe(long id) {
         SQLiteDatabase db = this.getWritableDatabase();

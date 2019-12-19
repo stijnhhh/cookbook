@@ -52,7 +52,7 @@ public class PlatformAdapter extends ArrayAdapter<RecipeAPI> {
                 String recipe = values.get(position).getName();
 
                 try {
-                    db.getRecipe(recipeID);
+                    db.getFavorite(recipeID);
 
                     toon(recipe + " is already added!!");
                 } catch (Exception e) {
@@ -60,8 +60,6 @@ public class PlatformAdapter extends ArrayAdapter<RecipeAPI> {
 
                     toon(recipe + " is added to favorites!!");
                 }
-
-                toon(recipe);
             }
         });
 
@@ -70,6 +68,6 @@ public class PlatformAdapter extends ArrayAdapter<RecipeAPI> {
 
     public void toon(String tekst)
     {
-        Toast.makeText(getContext(),tekst + " added to favorites!",Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(),tekst ,Toast.LENGTH_SHORT).show();
     }
 }
