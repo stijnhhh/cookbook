@@ -2,6 +2,7 @@ package be.thomasmore.cookbook.ui.recipe;
 
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,14 +52,15 @@ public class PlatformAdapter extends ArrayAdapter<RecipeAPI> {
                 int recipeID =  values.get(position).getRecipeId();
                 String recipe = values.get(position).getName();
 
-                try {
-                    db.getFavorite(recipeID);
-
-                    toon(recipe + " is already added!!");
-                } catch (Exception e) {
+                if(db.getFavorite(recipeID).size() == 0)
+                {
                     db.insertFavorite(recipeID);
 
                     toon(recipe + " is added to favorites!!");
+                } else
+                {
+                    Log.d("lol", "" + db.getFavorite(recipeID).size());
+                    toon(recipe + " is already added!!");
                 }
             }
         });
