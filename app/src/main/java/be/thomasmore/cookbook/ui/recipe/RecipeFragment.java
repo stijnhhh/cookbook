@@ -96,7 +96,7 @@ public class RecipeFragment extends Fragment {
             }
         });
 
-        httpReader.execute("https://www.themealdb.com/api/json/v1/1/search.php?s=%");
+        httpReader.execute("https://www.themealdb.com/api/json/v1/1/search.php?s=");
     }
 
     private void getRecipesByCategory(String categoryName)
