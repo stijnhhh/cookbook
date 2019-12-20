@@ -74,7 +74,7 @@ public class DetailCustomRecipe extends Fragment {
         TextView recipeInstructions = (TextView) root.findViewById(R.id.recipe_instructions);
         recipeInstructions.setText(recipe.getInstructions());
 
-        List<RecipeIngredient> recipeIngredients = db.getRecipeIngredients(recipeId);
+        List<RecipeIngredient> recipeIngredients = db.getRecipeIngredientsByRecipeId(recipeId);
         Log.i("findme", recipeIngredients + "");
         List<String> ingredientList = new ArrayList<String>();
         for(RecipeIngredient recipeIngredient: recipeIngredients){

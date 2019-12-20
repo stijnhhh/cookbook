@@ -209,6 +209,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
         return category;
     }
+
     public Recipe getRecipe(int recipeId) {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -256,6 +257,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
         return ingredient;
     }
+
     public boolean ingredientExists(String name) {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -290,7 +292,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
         return lijst;
     }
-    public List<RecipeIngredient> getRecipeIngredients(int recipeId) {
+
+    public List<RecipeIngredient> getRecipeIngredientsByRecipeId(int recipeId) {
         List<RecipeIngredient> lijst = new ArrayList<RecipeIngredient>();
 
         String selectQuery = "SELECT  * FROM recipeIngredient WHERE recipeId = " + recipeId;
@@ -300,8 +303,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         if (cursor.moveToFirst()) {
             do {
-                RecipeIngredient recipeIngredient = new RecipeIngredient(cursor.getInt(0),
-                        cursor.getInt(1), cursor.getString(2));
+                RecipeIngredient recipeIngredient = new RecipeIngredient(
+                        cursor.getInt(1), cursor.getInt(2), cursor.getString(3));
                 lijst.add(recipeIngredient);
                 Log.i("findme", recipeIngredient + "");
             } while (cursor.moveToNext());
