@@ -135,6 +135,7 @@ public class addRecipeFragment extends Fragment {
         TableRow tableRow = new TableRow(getContext());
         EditText editMeasurement = new EditText(getContext());
         EditText editIngredient = new EditText(getContext());
+        editIngredient.setWidth(350);
 
         tableRow.addView(editMeasurement);
         tableRow.addView(editIngredient);

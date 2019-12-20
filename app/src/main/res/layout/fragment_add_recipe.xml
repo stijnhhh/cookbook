@@ -40,7 +40,6 @@
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:inputType="text|textMultiLine"
-            android:text="@string/addrecipe_instructionslabel"
             />
 
             <TableLayout
