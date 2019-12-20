@@ -91,6 +91,9 @@ public class DetailFragment extends Fragment {
                 db.deleteFavorite(recipeId);
                 addToFavoriteButton.setVisibility(View.VISIBLE);
                 removeFromFavoriteButton.setVisibility(View.INVISIBLE);
+
+                Snackbar.make(root, "Removed " + recipe.getName() + " from favorites!", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
             }
         });
         addToFavoriteButton.setOnClickListener(new View.OnClickListener() {

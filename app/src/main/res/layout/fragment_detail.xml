@@ -50,16 +50,18 @@
                 android:layout_centerVertical="true"
                 android:background="@drawable/heart"
                 android:layout_alignParentRight="true"
-                android:backgroundTint="@color/red"
+                android:backgroundTint="@color/buttonColor"
                 android:layout_marginRight="10dp"
                 android:layout_gravity="center_horizontal"/>
             <Button
-                android:layout_width="wrap_content"
+                android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/remove_from_favorite"
-                android:text="Remove from favorites"
+                android:layout_centerVertical="true"
+                android:background="@drawable/heart"
+                android:layout_alignParentRight="true"
                 android:layout_gravity="center_horizontal"
-                android:backgroundTint="@color/buttonColor"/>
+                android:backgroundTint="@color/red"/>
 
         </LinearLayout>
     </ScrollView>
