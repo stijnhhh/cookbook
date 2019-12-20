@@ -166,6 +166,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put("recipeId", recipeIngredient.getRecipeId());
         values.put("measurement", recipeIngredient.getMeasurement());
 
+        Log.i("findme", values + "");
 
         long id = db.insert("recipeIngredient", null, values);
 
@@ -302,6 +303,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 RecipeIngredient recipeIngredient = new RecipeIngredient(cursor.getInt(0),
                         cursor.getInt(1), cursor.getString(2));
                 lijst.add(recipeIngredient);
+                Log.i("findme", recipeIngredient + "");
             } while (cursor.moveToNext());
         }
 

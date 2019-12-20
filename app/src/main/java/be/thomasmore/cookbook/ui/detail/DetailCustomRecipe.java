@@ -75,6 +75,7 @@ public class DetailCustomRecipe extends Fragment {
         recipeInstructions.setText(recipe.getInstructions());
 
         List<RecipeIngredient> recipeIngredients = db.getRecipeIngredients(recipeId);
+        Log.i("findme", recipeIngredients + "");
         List<String> ingredientList = new ArrayList<String>();
         for(RecipeIngredient recipeIngredient: recipeIngredients){
             ingredientList.add(recipeIngredient.getMeasurement() + " " + db.getIngredient(recipeIngredient.getIngredientId()));

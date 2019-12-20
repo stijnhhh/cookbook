@@ -136,6 +136,6 @@ public class RecipeFragment extends Fragment {
             }
         });
 
-        httpReader.execute("https://www.themealdb.com/api/json/v1/1/search.php?s=%" + name + "%");
+        httpReader.execute("https://www.themealdb.com/api/json/v1/1/search.php?s=" + name);
     }
 }
