@@ -1,9 +1,7 @@
 package be.thomasmore.cookbook.ui.recipe;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,29 +9,22 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import java.util.List;
 
 import be.thomasmore.cookbook.R;
 import be.thomasmore.cookbook.ui.detail.DetailFragment;
-import be.thomasmore.cookbook.ui.helpers.DatabaseHelper;
 import be.thomasmore.cookbook.ui.helpers.DownloadImageTask;
-import be.thomasmore.cookbook.ui.models.Favorite;
 import be.thomasmore.cookbook.ui.models.RecipeAPI;
 
-public class PlatformAdapter extends ArrayAdapter<RecipeAPI> {
+public class RecipeAdapter extends ArrayAdapter<RecipeAPI> {
     private final Context context;
     private final List<RecipeAPI> values;
 
-    public PlatformAdapter(Context context, List<RecipeAPI> values) {
-        super(context, R.layout.platformlistviewitem, values);
+    public RecipeAdapter(Context context, List<RecipeAPI> values) {
+        super(context, R.layout.recipelistviewitem, values);
         this.context = context;
         this.values = values;
     }
@@ -42,13 +33,21 @@ public class PlatformAdapter extends ArrayAdapter<RecipeAPI> {
     public View getView(final int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        View rowView = inflater.inflate(R.layout.platformlistviewitem, parent, false);
+        View rowView = inflater.inflate(R.layout.recipelistviewitem, parent, false);
 
         final TextView textName = (TextView) rowView.findViewById(R.id.name);
         final ImageView mealImage = (ImageView) rowView.findViewById(R.id.meal_image);
         final Button addToFavoriteButton = (Button) rowView.findViewById(R.id.go_to_details);
 
-        textName.setText(values.get(position).getName());
+        String tekstName;
+        if (values.get(position).getName().length() > 15)
+        {
+            tekstName = values.get(position).getName().substring(0, 15) + "...";
+        } else
+        {
+            tekstName = values.get(position).getName();
+        }
+        textName.setText(tekstName);
 
         new DownloadImageTask(mealImage).execute(values.get(position).getPicture());
         mealImage.getLayoutParams().width = 200;
@@ -70,10 +69,5 @@ public class PlatformAdapter extends ArrayAdapter<RecipeAPI> {
         });
 
         return rowView;
-    }
-
-    public void toon(String tekst)
-    {
-        Toast.makeText(getContext(),tekst ,Toast.LENGTH_SHORT).show();
     }
 }

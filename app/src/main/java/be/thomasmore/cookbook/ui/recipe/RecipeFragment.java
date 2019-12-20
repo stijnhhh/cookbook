@@ -1,8 +1,6 @@
 package be.thomasmore.cookbook.ui.recipe;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -96,7 +94,7 @@ public class RecipeFragment extends Fragment {
                 JsonHelper jsonHelper = new JsonHelper();
                 List<RecipeAPI> allRecipes = jsonHelper.getAllRecipes(result);
 
-                PlatformAdapter recipeAdapter = new PlatformAdapter(getContext(), allRecipes);
+                RecipeAdapter recipeAdapter = new RecipeAdapter(getContext(), allRecipes);
 
                 listViewRecipes.setAdapter(recipeAdapter);
             }
@@ -114,7 +112,7 @@ public class RecipeFragment extends Fragment {
                 JsonHelper jsonHelper = new JsonHelper();
                 List<RecipeAPI> recipesByCategory = jsonHelper.getRecipesByCategory(result);
 
-                PlatformAdapter recipeAdapter = new PlatformAdapter(getContext(), recipesByCategory);
+                RecipeAdapter recipeAdapter = new RecipeAdapter(getContext(), recipesByCategory);
 
                 listViewRecipes.setAdapter(recipeAdapter);
             }
@@ -132,7 +130,7 @@ public class RecipeFragment extends Fragment {
                 JsonHelper jsonHelper = new JsonHelper();
                 List<RecipeAPI> recipesByName = jsonHelper.getRecipesByName(result);
 
-                PlatformAdapter recipeAdapter = new PlatformAdapter(getContext(), recipesByName);
+                RecipeAdapter recipeAdapter = new RecipeAdapter(getContext(), recipesByName);
 
                 listViewRecipes.setAdapter(recipeAdapter);
             }
