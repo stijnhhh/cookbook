@@ -1,12 +1,14 @@
 package be.thomasmore.cookbook.ui.detail;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.app.Fragment;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+//import androidx.fragment.app.Fragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -42,7 +44,8 @@ public class DetailFragment extends Fragment {
 
     private DetailViewModel detailViewModel;
     private View root;
-    private Button favorite;
+    private Button removeFromFavoriteButton;
+    private Button addToFavoriteButton;
     private DatabaseHelper db;
     private RecipeAPI recipe;
     private List<Favorite> listFavs;
@@ -58,33 +61,53 @@ public class DetailFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        detailViewModel =
-                ViewModelProviders.of(this).get(DetailViewModel.class);
+
+        if (container != null) {
+            container.removeAllViews();
+        }
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Details");
+
         root = inflater.inflate(R.layout.fragment_detail, container, false);
-        final TextView textView = root.findViewById(R.id.text_send);
         Bundle args = getArguments();
         recipeId = args.getInt("id", 0);
-        favorite = root.findViewById(R.id.favBtn);
-        favorite.setOnClickListener(new View.OnClickListener() {
+        removeFromFavoriteButton = root.findViewById(R.id.remove_from_favorite);
+        addToFavoriteButton = root.findViewById(R.id.add_to_favorite);
+
+        db = new DatabaseHelper(getActivity());
+
+        if (db.getFavorite(recipeId).size() == 0)
+        {
+            addToFavoriteButton.setVisibility(View.VISIBLE);
+            removeFromFavoriteButton.setVisibility(View.INVISIBLE);
+        } else
+        {
+            removeFromFavoriteButton.setVisibility(View.VISIBLE);
+            addToFavoriteButton.setVisibility(View.INVISIBLE);
+        }
+
+        removeFromFavoriteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(favorite.getText() == "Remove from favorites"){
-                    db.deleteFavorite(recipeId);
-                    favorite.setText("Add to favorites");
-                } else {
-                    addToFavorite();
-                    favorite.setText("Remove from favorites");
-                }
+                db.deleteFavorite(recipeId);
+                addToFavoriteButton.setVisibility(View.VISIBLE);
+                removeFromFavoriteButton.setVisibility(View.INVISIBLE);
             }
         });
+        addToFavoriteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addToFavorite();
+                addToFavoriteButton.setVisibility(View.INVISIBLE);
+                removeFromFavoriteButton.setVisibility(View.VISIBLE);
+            }
+        });
+
+
         db = new DatabaseHelper(getActivity());
         CustomListview customListview = (CustomListview) root.findViewById(R.id.customList);
         listFavs = db.getFavorites();
         for (Favorite favorite: listFavs) {
             favIds.add(favorite.getRecipeId());
-        }
-        if(listFavs.contains(recipeId)){
-            favorite.setText("Remove from favorites");
         }
         readRecipe(recipeId);
         return root;
@@ -94,8 +117,6 @@ public class DetailFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        detailViewModel = ViewModelProviders.of(this).get(DetailViewModel.class);
-        // TODO: Use the ViewModel
     }
 
     private void readRecipe(int recipeId)

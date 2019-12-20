@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -42,6 +43,11 @@ public class addRecipeFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+
+        if (container != null) {
+            container.removeAllViews();
+        }
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Add Recipes");
 
         addRecipeViewModel =
                 ViewModelProviders.of(this).get(AddRecipeViewModel.class);

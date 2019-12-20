@@ -13,7 +13,9 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
@@ -43,6 +45,12 @@ public class FavoriteFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        if (container != null) {
+            container.removeAllViews();
+        }
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Favorite Recipes");
+
         favoriteViewModel =
                 ViewModelProviders.of(this).get(FavoriteViewModel.class);
         root = inflater.inflate(R.layout.fragment_favorite, container, false);
@@ -95,13 +103,13 @@ public class FavoriteFragment extends Fragment {
     }
 
     public void onClick(int recipeId){
-        Fragment fragment = new DetailFragment();
+        DetailFragment fragment = new DetailFragment();
         Bundle args = new Bundle();
         args.putInt("id", recipeId);
         fragment.setArguments(args);
-        FragmentTransaction fragmentTransaction = this.getFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.nav_host_fragment, fragment);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
+        fragment.setArguments(args);
+        ((FragmentActivity) getContext()).getFragmentManager().beginTransaction()
+                .replace(R.id.nav_host_fragment, fragment)
+                .commit();
     }
 }

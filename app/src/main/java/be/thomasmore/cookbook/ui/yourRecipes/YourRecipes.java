@@ -1,5 +1,6 @@
 package be.thomasmore.cookbook.ui.yourRecipes;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -43,6 +44,12 @@ public class YourRecipes extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+
+        if (container != null) {
+            container.removeAllViews();
+        }
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Your recipes");
+
         mViewModel =
                 ViewModelProviders.of(this).get(YourRecipesViewModel.class);
         root = inflater.inflate(R.layout.your_recipes_fragment, container, false);
